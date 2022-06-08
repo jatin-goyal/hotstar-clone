@@ -37,7 +37,9 @@ export default function Header(props) {
   return (
     <Nav>
       <Logo>
-        <img src="/images/logo.svg" />
+        <a href="/home">
+          <img src="/images/logo.svg" />
+        </a>
       </Logo>
       {!userName ? (
         <Login onClick={signInWithGoogle}>LOGIN</Login>
@@ -103,10 +105,11 @@ const Logo = styled.a`
   width: 80px;
   max-height: 70px;
   display: inline-block;
-
-  img {
-    display: block;
-    width: 100%;
+  a {
+    img {
+      display: block;
+      width: 100%;
+    }
   }
 `;
 
