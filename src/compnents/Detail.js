@@ -26,10 +26,12 @@ export default function Detail() {
     },
   };
 
+  let urlParams;
+
   const handleClick = () => {
     const url = detailData.video;
     // console.log(url);
-    const urlParams = new URLSearchParams(new URL(url).search);
+    urlParams = new URLSearchParams(new URL(url).search);
     // console.log(urlParams);
     setTrailerUrl(urlParams.get("v"));
     // console.log(trailerUrl);
@@ -85,7 +87,7 @@ export default function Detail() {
             </div>
           </GroupWatch>
         </Controls>
-        {detailData.video && <YouTube videoId={trailerUrl} opts={opts} />}
+        {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
         <SubTitle>{detailData && detailData.subTitle}</SubTitle>
         <Description>{detailData && detailData.description}</Description>
       </ContentMeta>
