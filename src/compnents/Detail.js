@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import YouTube from "react-youtube";
 
 export default function Detail() {
+  const navigate = useNavigate();
   const { id } = useParams();
+  // console.log(id);
   const [detailData, setDetailData] = useState({});
   const [trailerUrl, setTrailerUrl] = useState("");
 
@@ -22,20 +24,22 @@ export default function Detail() {
     height: "390",
     width: "100%",
     playVars: {
-      autoplay: 0,
+      autoplay: 1,
     },
   };
-
-  let urlParams;
 
   const handleClick = () => {
     const url = detailData.video;
     // console.log(url);
-    urlParams = new URLSearchParams(new URL(url).search);
+    const urlParams = new URLSearchParams(new URL(url).search);
     // console.log(urlParams);
     setTrailerUrl(urlParams.get("v"));
     // console.log(trailerUrl);
+
+    // navigate(`/video/${trailerUrl}`);
   };
+
+  // trailerUrl && navigate(`/video/${trailerUrl}`);
 
   useEffect(() => {
     const getMovie = async () => {
@@ -59,6 +63,7 @@ export default function Detail() {
     getMovie();
   }, [id]);
 
+  // console.log(trailerUrl);
   return (
     <Container>
       <Background>
@@ -68,8 +73,9 @@ export default function Detail() {
         <img src={detailData && detailData.titleImg} alt="" />
       </ImageTitle>
       <ContentMeta>
-        <Controls>
-          <Player onClick={handleClick}>
+        {/* <Link to={`/video/` + trailerUrl}> */}
+        <Controls onClick={handleClick}>
+          <Player>
             <img src="/images/play-icon-black.png" alt="" />
             <span>Play</span>
           </Player>
@@ -77,6 +83,7 @@ export default function Detail() {
             <img src="/images/play-icon-white.png" alt="" />
             <span>Trailer</span>
           </Trailer>
+
           <AddList>
             <span />
             <span />
@@ -87,6 +94,7 @@ export default function Detail() {
             </div>
           </GroupWatch>
         </Controls>
+        {/* </Link> */}
         {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
         <SubTitle>{detailData && detailData.subTitle}</SubTitle>
         <Description>{detailData && detailData.description}</Description>

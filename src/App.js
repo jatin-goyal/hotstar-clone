@@ -9,6 +9,7 @@ import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
 import { setSignoutState, setUserLoginDetails } from "./features/userSlice";
 import Detail from "./compnents/Detail";
+import Video from "./compnents/Video";
 
 function App() {
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ function App() {
           <Route exact path="/" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/detail/:id" element={<Detail />} />
+          <Route path="/video/:trailerUrl" element={<Video />} />
         </Routes>
       </Router>
     </div>
