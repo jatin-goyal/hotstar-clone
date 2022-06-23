@@ -7,7 +7,7 @@ export default function Login(props) {
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        console.log(result);
+        // console.log(result);
       })
       .catch((error) => {
         alert(error.message);

@@ -3,10 +3,12 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
+import YouTube from "react-youtube";
 
 export default function Detail() {
   const { id } = useParams();
   const [detailData, setDetailData] = useState({});
+  const [trailerUrl, setTrailerUrl] = useState("");
 
   let type;
   let subTitle;
@@ -15,6 +17,23 @@ export default function Detail() {
   let title;
   let cardImg;
   let titleImg;
+
+  const opts = {
+    height: "390",
+    width: "100%",
+    playVars: {
+      autoplay: 0,
+    },
+  };
+
+  const handleClick = () => {
+    const url = detailData.video;
+    // console.log(url);
+    const urlParams = new URLSearchParams(new URL(url).search);
+    // console.log(urlParams);
+    setTrailerUrl(urlParams.get("v"));
+    // console.log(trailerUrl);
+  };
 
   useEffect(() => {
     const getMovie = async () => {
@@ -48,7 +67,7 @@ export default function Detail() {
       </ImageTitle>
       <ContentMeta>
         <Controls>
-          <Player>
+          <Player onClick={handleClick}>
             <img src="/images/play-icon-black.png" alt="" />
             <span>Play</span>
           </Player>
@@ -66,6 +85,7 @@ export default function Detail() {
             </div>
           </GroupWatch>
         </Controls>
+        {detailData.video && <YouTube videoId={trailerUrl} opts={opts} />}
         <SubTitle>{detailData && detailData.subTitle}</SubTitle>
         <Description>{detailData && detailData.description}</Description>
       </ContentMeta>
