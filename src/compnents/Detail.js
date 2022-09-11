@@ -1,24 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import YouTube from "react-youtube";
 
 export default function Detail() {
-  const navigate = useNavigate();
   const { id } = useParams();
-  // console.log(id);
   const [detailData, setDetailData] = useState({});
   const [trailerUrl, setTrailerUrl] = useState("");
-
-  let type;
-  let subTitle;
-  let backgroundImg;
-  let description;
-  let title;
-  let cardImg;
-  let titleImg;
 
   const opts = {
     height: "390",
@@ -30,16 +20,9 @@ export default function Detail() {
 
   const handleClick = () => {
     const url = detailData.video;
-    // console.log(url);
     const urlParams = new URLSearchParams(new URL(url).search);
-    // console.log(urlParams);
     setTrailerUrl(urlParams.get("v"));
-    // console.log(trailerUrl);
-
-    // navigate(`/video/${trailerUrl}`);
   };
-
-  // trailerUrl && navigate(`/video/${trailerUrl}`);
 
   useEffect(() => {
     const getMovie = async () => {
@@ -48,11 +31,8 @@ export default function Detail() {
         const movie = await getDoc(movieRef);
 
         if (movie.exists()) {
-          // console.log(movie.data());
           setDetailData(movie.data());
-          // console.log(detailData);
         } else {
-          // movie.data() will be undefined in this case
           console.log("No such document!");
         }
       } catch (error) {
@@ -63,7 +43,6 @@ export default function Detail() {
     getMovie();
   }, [id]);
 
-  // console.log(trailerUrl);
   return (
     <Container>
       <Background>
@@ -73,7 +52,6 @@ export default function Detail() {
         <img src={detailData && detailData.titleImg} alt="" />
       </ImageTitle>
       <ContentMeta>
-        {/* <Link to={`/video/` + trailerUrl}> */}
         <Controls onClick={handleClick}>
           <Player>
             <img src="/images/play-icon-black.png" alt="" />
@@ -112,15 +90,6 @@ const Container = styled.main`
   display: block;
   top: 72px;
   padding: 0px calc(3.5vw + 5px);
-
-  /* &::after {
-    background: url("/images/home-background.png") center center / cover
-      no-repeat fixed;
-    content: "";
-    position: absolute;
-    inset: 0px;
-    z-index: -1;
-  } */
 `;
 
 const Background = styled.div`
